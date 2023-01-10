@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>image</title>
+    <style>
+        .left{
+            position:relative;
+            float: left;
+            margin-right: 10px;
+        }
+        #box{
+            position:absolute;
+            width:70px;
+            height: 70px;
+            background-color: #bfc;
+            opacity: 0.4;
+            display:none
+        }
+        .smallImg{
+            width: 150px;
+            height: 150px;
+        }
+        .bigImg{
+            width:400px;
+            height: 400px;
+            position:absolute;
+            
+        }
+        .right{
+            position:relative;
+            float:left;
+            width:200px;
+            height: 200px;
+            overflow: hidden;
+            display:none
+        }
+        
+    </style>
+</head>
+<body>
+    
+        <div class="left">
+            <div id="box"></div>   
+            <img src="./image/small.jpg" alt="小图" class="smallImg">      
+        </div>
+        <div class="right">   
+            <img src="./image/large.jpg" alt="大图" class="bigImg">         
+        </div>
+    
+    
+    <script>
+        var left = document.getElementsByClassName('left')[0]
+        var box = document.getElementById('box')
+        var smallImg = document.getElementsByClassName('smallImg')[0]
+        var right = document.getElementsByClassName('right')[0]
+        var bigImg = document.getElementsByClassName('bigImg')[0]
+        //设置鼠标移入事件，鼠标进入左边小图时显示box和右边的大图
+        left.addEventListener('mouseover',function(){
+            box.style.display = 'block'
+            right.style.display = 'block'
+        })
+        //鼠标移出事件，鼠标移出左边小图时隐藏box和右边的大图
+        left.addEventListener('mouseout',function(){
+            box.style.display = 'none'
+            right.style.display = 'none'
+        })
+        //鼠标移动事件，监听鼠标移动的坐标
+        left.addEventListener('mousemove',function(e){
+            //box随着鼠标移动
+            let box_x = e.pageX - left.offsetLeft - box.offsetWidth/2 //box的相对于left的位置
+            let box_y = e.pageY - left.offsetTop - box.offsetHeight/2    
+            //限制box的移动距离 
+            if(box_x < 0){
+                box_x = 0
+            }
+            else if(box_x > left.offsetWidth - box.offsetWidth){
+                box_x = left.offsetWidth-box.offsetWidth
+            }
+            if(box_y < 0){
+                box_y = 0
+            }else if(box_y > left.offsetHeight - box.offsetHeight){
+                box_y = left.offsetHeight - box.offsetHeight
+            }  
+            box.style.left = box_x + 'px'
+            box.style.top = box_y + 'px'
+            bigImg.style.left = -box_x * bigImg.offsetWidth / smallImg.offsetWidth + 'px'
+            bigImg.style.top = -box_y * bigImg.offsetHeight / smallImg.offsetHeight + 'px'
+        })
+        
+
+    </script>
+</body>
+</html>
